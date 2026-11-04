@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B3D - Custom 3D Printing Services</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        /* Deep Twilight Blue Hour Palette */
+        body { 
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; 
+            background: linear-gradient(180deg, #09101d 0%, #05080f 50%, #020307 100%); 
+            color: #e2e8f0; 
+            padding: 60px 20px; 
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Abstract Blue Hour Vector Tree Art Effects - No Images Required */
+        .tree-background {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.12;
+        }
+        .tree-silhouette {
+            position: absolute;
+            bottom: 0; right: -5%;
+            width: 500px; height: 700px;
+            background: linear-gradient(to top, transparent, #2563eb);
+            clip-path: polygon(50% 0%, 15% 40%, 35% 40%, 5% 75%, 45% 75%, 20% 100%, 80% 100%, 55% 75%, 95% 75%, 65% 40%, 85% 40%);
+            filter: blur(20px);
+        }
+        .tree-silhouette-left {
+            position: absolute;
+            top: 15%; left: -10%;
+            width: 400px; height: 600px;
+            background: linear-gradient(to top, transparent, #1d4ed8);
+            clip-path: polygon(50% 0%, 20% 35%, 40% 35%, 10% 68%, 48% 68%, 25% 100%, 75% 100%, 52% 68%, 90% 68%, 60% 35%, 80% 35%);
+            filter: blur(25px);
+        }
+        
+        .container { max-width: 950px; margin: 0 auto; position: relative; z-index: 10; }
+        
+        /* Main Branding Banner - Fluid Curved Theme */
+        header { 
+            text-align: center; 
+            margin-bottom: 50px; 
+            background: rgba(17, 24, 39, 0.45); 
+            padding: 50px 30px; 
+            border-radius: 32px; 
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(59, 130, 246, 0.12);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .logo-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
+            color: white;
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+        header h1 { color: #60a5fa; font-size: 3.5rem; margin-bottom: 16px; letter-spacing: -1px; font-weight: 800; }
+        header .subtitle { color: #94a3b8; font-size: 1.25rem; line-height: 1.7; max-width: 700px; margin: 0 auto; }
+        
+        /* Extended Informational Grid Section */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 40px; }
+        
+        /* Geometric Soft-Edge Content Blocks */
+        .card { 
+            background: linear-gradient(145deg, #111827 0%, #0b0f19 100%); 
+            border-radius: 24px; 
+            padding: 35px 25px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.4); 
+            cursor: pointer; 
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+            border: 1px solid rgba(255,255,255,0.02);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 250px;
+        }
+        .card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.12); 
+            border: 1px solid rgba(96, 165, 250, 0.3);
+        }
+        .card-icon {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            color: #60a5fa;
+            background: rgba(59, 130, 246, 0.1);
+            width: 60px; height: 60px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 18px;
+        }
+        .card-title { font-size: 1.4rem; margin-bottom: 12px; color: #f8fafc; font-weight: 600; }
+        .card-short { color: #94a3b8; font-size: 1rem; line-height: 1.6; }
+        .action-link { color: #60a5fa; font-size: 0.9rem; font-weight: 600; margin-top: 20px; display: inline-flex; align-items: center; }
+
+        /* Secondary Detailed Info Banner (Longer Page Extension) */
+        .info-panel {
+            background: rgba(15, 23, 42, 0.4);
+            border-radius: 28px;
+            padding: 40px;
+            margin-top: 20px;
+            border: 1px solid rgba(255,255,255,0.03);
+            backdrop-filter: blur(8px);
+        }
+        .info-panel h3 { color: #60a5fa; margin-bottom: 15px; font-size: 1.4rem; }
+        .info-panel p { color: #94a3b8; line-height: 1.7; font-size: 1.05rem; margin-bottom: 15px; }
+        .info-panel ul { margin-left: 20px; color: #cbd5e1; line-height: 1.8; }
+
+        /* Smooth Interactive Popup Panel */
+        .modal { 
+            display: none; 
+            position: fixed; 
+            top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(2, 3, 6, 0.9); 
+            z-index: 1000; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 24px; 
+            backdrop-filter: blur(12px);
+        }
+        .modal-content { 
+            background: #0f172a; 
+            max-width: 580px; 
+            width: 100%; 
+            border-radius: 32px; 
+            overflow: hidden; 
+            position: relative; 
+            animation: smoothReveal 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(96, 165, 250, 0.25);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            padding: 35px;
+        }
+        .modal-body { padding-top: 10px; }
+        .modal-title { font-size: 1.8rem; margin-bottom: 16px; color: #60a5fa; font-weight: 700; }
+        .modal-desc { color: #cbd5e1; font-size: 1.1rem; line-height: 1.7; white-space: pre-line; }
+        
+        .close-btn { 
+            position: absolute; 
+            top: 20px; right: 25px; 
+            font-size: 36px; 
+            color: #94a3b8; 
+            cursor: pointer; 
+            z-index: 1010; 
+            transition: color 0.2s; 
+        }
+        .close-btn:hover { color: #60a5fa; }
+        
+        @keyframes smoothReveal { 
+            from { opacity: 0; transform: scale(0.93) translateY(15px); } 
+            to { opacity: 1; transform: scale(1) translateY(0); } 
+        }
+    </style>
+</head>
+<body>
+
+<!-- CSS Visual Tree Overlay Layers -->
+<div class="tree-background">
+    <div class="tree-silhouette"></div>
+    <div class="tree-silhouette-left"></div>
+</div>
+
+<div class="container">
+    <header>
+        <div class="logo-badge">LOCAL MANUFACTURING</div>
+        <h1>B3D</h1>
+        <p class="subtitle">Custom, independent 3D printing services tailored for teachers, designers, and creators. We convert digital blueprints from MakerWorld directly into tangible, real-world objects.</p>
+    </header>
+    
+    <div class="grid">
+        <!-- ITEM 1 -->
+        <div class="card" onclick="openModal('🎓 Teacher & Classroom Models', 'We build durable, real-world educational tools to help school classrooms interact with learning materials.\n\nOur custom prints cover:\n• Vibrant geometric shapes and fraction slices\n• Complex molecular structures and biology components\n• Sturdy custom workspace dividers, hooks, and classroom organizational trays.\n\nSimply point us to any design setup or list your classroom requirements for local delivery.')">
+            <div>
+                <div class="card-icon">🎓</div>
+                <div class="card-title">Classroom Aids</div>
+                <div class="card-short">Custom tools, models, and specialized organizers optimized for school environments.</div>
+            </div>
+            <div class="action-link">Click to view details →</div>
+        </div>
+
+        <!-- ITEM 2 -->
+        <div class="card" onclick="openModal('🌀 MakerWorld Library Blueprints', 'Have you found an elegant layout or engineering tool on MakerWorld? We print almost the entire open database.\n\nHow it works:\n1. Browse through MakerWorld and copy your chosen model URL link.\n2. Pass the link to us directly.\n3. We handle the technical slicing configurations, optimize structural shell thicknesses, match filaments, and manage the automated printing cycles seamlessly.')">
+            <div>
+                <div class="card-icon">🌀</div>
+                <div class="card-title">MakerWorld Support</div>
+                <div class="card-short">Send us any digital link from the library, and we will handle calibration and printing.</div>
+            </div>
+            <div class="action-link">Click to view details →</div>
+        </div>
+
+        <!-- ITEM 3 -->
+        <div class="card" onclick="openModal('🛠️ Custom Commissions', 'Need replacement machinery parts, custom prototypes, small hardware gears, or beautiful personalized gifts?\n\nOur service targets custom requests where precision matters. We run thorough batch slicing inspections, choose premium rigid filaments, and specialize in high-detail, small-run prints without corporate overhead fees.')">
+            <div>
+                <div class="card-icon">🛠️</div>
+                <div class="card-title">Custom Commissions</div>
+                <div class="card-short">Bespoke functional replacements, prototype components, and personalized models.</div>
+            </div>
+            <div class="action-link">Click to view details →</div>
+        </div>
+    </div>
+
+    <!-- Long Form Descriptive Extension Panel -->
+    <div class="info-panel">
+        <h3>How Our Word-of-Mouth Service Works</h3>
